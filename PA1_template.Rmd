@@ -38,7 +38,21 @@ MeanStepsPerInterval <- summarise(group_by(ActCaseTbl, interval), mean(steps))
 plot (MeanStepsPerInterval$interval, MeanStepsPerInterval$`mean(steps)`, type = "l", col  = "blue", main = "Number of Steps during the Day", xlab = "Time of the Day (Intervals)", ylab = "Average number of steps")
 ```
 ## Imputing missing values
+```{r "Prepare the data to report on"}
+NothingOnRecord <- sum(is.na(MyActiveDays$steps))
+ActCaseTblWithNA <- tbl_df(MyActiveDays) # Build the tabular data to work with, now with NA values!
 
-
+```
+The original data set has `r NothingOnRecord` NA values.  
+  
+To artificially fill the NA values with something reasonable, **replace** the NA value  
+with the average (calculated) value for the time interval(s) with that missing value.
+**The new data set is then a changed data set compared to the original and raw data!**
 
 ## Are there differences in activity patterns between weekdays and weekends?
+```{r "Prepare the raw data to report on"}
+mutate(ActCaseTblWithNA, Weekend = is.weekend(ActCaseTblWithNA$date)) # So create a weekend column
+plot (MeanStepsPerInterval$interval, MeanStepsPerInterval$`mean(steps)`, type = "l", col  = "red", main = "Number of Steps during the Day: Week vs. Weekend", xlab = "Time of the Day (Intervals)", ylab = "Average number of steps")
+```
+
+```
