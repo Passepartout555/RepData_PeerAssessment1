@@ -16,21 +16,27 @@ ActiveCases <-MyActiveDays[goodActivity, ]    # So the observations with data, n
 z <- strptime(ActiveCases$date, "%Y-%m-%d")
 ```
 ## What is mean total number of steps taken per day?
-### Total number of steps taken per day
 ```{r "Steps per Day"}
+# Total number of steps taken per day
+library(dplyr)        # Use the dplyr package
+ActCaseTbl <- tbl_df(ActiveCases) # Build the tabular data to work with
+StepsPerDay <- summarise(group_by(ActCaseTbl, date), sum(steps))
 
+# Build a histogram for the Steps per Day
+hist(StepsPerDay$`sum(steps)`, breaks = 20, col  = "green", main = "Overview - Steps per Day", xlab = "Steps per Day")
+# Calculate some stats for the data
+MeanSteps <- mean(StepsPerDay$`sum(steps)`)
+MedianSteps <- median(StepsPerDay$`sum(steps)`)
 ```
-### Total number of steps taken per day - Graphically
-If you do not understand the difference between a histogram and a barplot, research the difference between them. Make a histogram of the total number of steps taken each day
-Calculate and report the mean and median of the total number of steps taken per day
-```{r "Calculate Mean"}
-# Sum of total steps measured divided by days of measurement
-MeanTotalSteps <- sum(ActiveCases$steps)/length(unique(ActiveCases$date))
-```
+The mean steps per day are `r MeanSteps`. The median number of steps is `r MedianSteps`.
+
 ## What is the average daily activity pattern?
-
-
-
+```{r "Steps per Interval"}
+# Calculate the average number of steps for a given interval
+MeanStepsPerInterval <- summarise(group_by(ActCaseTbl, interval), mean(steps))
+# Plot the number of steps over the intervals
+plot (MeanStepsPerInterval$interval, MeanStepsPerInterval$`mean(steps)`, type = "l", col  = "blue", main = "Number of Steps during the Day", xlab = "Time of the Day (Intervals)", ylab = "Average number of steps")
+```
 ## Imputing missing values
 
 
