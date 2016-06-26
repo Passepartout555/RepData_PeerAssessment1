@@ -51,6 +51,7 @@ with the average (calculated) value for the time interval(s) with that missing v
 
 ## Are there differences in activity patterns between weekdays and weekends?
 ```{r "Prepare the raw data to report on"}
+library(chron)
 mutate(ActCaseTblWithNA, Weekend = is.weekend(ActCaseTblWithNA$date)) # So create a weekend column
 plot (MeanStepsPerInterval$interval, MeanStepsPerInterval$`mean(steps)`, type = "l", col  = "red", main = "Number of Steps during the Day: Week vs. Weekend", xlab = "Time of the Day (Intervals)", ylab = "Average number of steps")
 ```
