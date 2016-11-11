@@ -1,4 +1,4 @@
-# Coursera Course Reproducible Research - Week 2 Assignment
+# Coursera Course Reproducible Research - Week 2
 Wener Steinbeck  
 11 November 2016  
 
@@ -197,19 +197,23 @@ ImputeMyActiveDays$Weekend <- as.factor(ImputeMyActiveDays$Weekend)
 # Break data in weekend vs. weekdays
 WeekendData <- ImputeMyActiveDays[ImputeMyActiveDays$Weekend == "weekend",]
 WeekdayData <- ImputeMyActiveDays[ImputeMyActiveDays$Weekend == "weekday",]
+
+# Calculate the means
+MeanStepsPerIntervalWE <- summarise(group_by(WeekendData, interval), MeanStepsWE = mean(steps))
+MeanStepsPerIntervalWD <- summarise(group_by(WeekdayData, interval), MeanStepsWD = mean(steps))
 # Plot the data
 par(mfrow=c(2,1))
 
-plot( x=WeekendData$interval, 
-      y=WeekendData$steps, 
+plot( x=MeanStepsPerIntervalWE$interval, 
+      y=MeanStepsPerIntervalWE$MeanStepsWE, 
       type="l",
       col="blue",
       main="Average # of steps on weekends per interval",
       ylab="Average # of steps", 
       xlab="5 min Time interval")
 
-plot( x=WeekdayData$interval, 
-      y=WeekdayData$steps, 
+plot( x=MeanStepsPerIntervalWD$interval, 
+      y=MeanStepsPerIntervalWD$MeanStepsWD, 
       type="l",
       col="red",
       main="Average # of steps on weekdays per interval",
